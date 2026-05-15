@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOMO MD MINI BOT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #000; color: white; font-family: 'Orbitron', sans-serif; overflow: hidden; }
+        
+        .bg-video {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; filter: brightness(0.3);
+        }
+
+        .neon-text-red { text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5); }
+        
+        .bg-grid {
+            background-image: linear-gradient(to right, rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .custom-glass {
+            background: rgba(10, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
+        }
+
+        .music-btn {
+            position: fixed; right: 20px; bottom: 20px;
+            background: rgba(255, 0, 0, 0.2); border: 1px solid #ff0000;
+            color: #ff0000; padding: 10px 20px; border-radius: 50px;
+            font-size: 10px; cursor: pointer; backdrop-filter: blur(5px);
+            z-index: 100; transition: 0.3s;
+        }
+        .music-btn:hover { background: #ff0000; color: #000; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center relative">
+    
+    <video class="bg-video" autoplay muted loop>
+        <source src="https://files.catbox.moe/dlcamg.mp4" type="video/mp4">
+    </video>
+
+    <div class="absolute inset-0 bg-grid opacity-20"></div>
+
+    <div id="root" class="relative z-10 w-full max-w-lg p-6">
+        <div class="custom-glass rounded-[3rem] p-12 text-center">
+            <div class="flex justify-center mb-8">
+                <div class="p-6 rounded-full border border-red-600/30 bg-black/40">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            <h1 class="text-3xl font-black neon-text-red mb-2 uppercase">❝ ᑎOᗰO ᗰᗪ ᗰIᑎI.ᗷOT ♡🕊️ ❞</h1>
+            <p class="text-[10px] text-red-500/40 tracking-[0.4em] mb-4 font-mono">NOMO MATRIX OS / V4.0</p>
+            
+            <!-- Edited credit to ITz_NOMO -->
+            <p class="text-[9px] text-white/60 mb-8 font-mono tracking-widest">CREATED BY ITz_NOMO</p>
+
+            <div class="flex bg-black/50 border border-red-600/30 rounded-2xl p-1.5 mb-8">
+                <input type="number" id="phone" placeholder="9476xxxxxxx" class="flex-1 bg-transparent px-6 py-4 outline-none font-mono text-white">
+                <button onclick="handleSubmit()" class="bg-red-600 px-8 py-4 rounded-xl font-black text-xs text-black uppercase hover:bg-red-500 transition-all">Submit</button>
+            </div>
+
+            <div id="console" class="bg-red-600/5 rounded-xl p-4 border border-red-600/10 text-left h-24 overflow-hidden font-mono text-[10px] text-red-500/60 leading-relaxed">
+                <div>[SYSTEM] NOMO_OS_INITIALIZED</div>
+                <div>[SYSTEM] WAITING_FOR_SIGNAL...</div>
+            </div>
+
+            <div id="result" class="hidden mt-8 py-6 bg-red-600/5 border border-red-600/10 rounded-2xl cursor-pointer" onclick="copyCode()">
+                <span class="text-[10px] text-red-500/40 tracking-widest font-black">ACCESS CODE</span>
+                <div id="code" class="text-5xl font-black neon-text-red tracking-widest mt-2">------</div>
+                <div id="copyMsg" class="text-[9px] text-red-600/30 mt-2">TAP TO COPY SIGNAL</div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/zko0jc.mp3" type="audio/mp3">
+    </audio>
+    <div class="music-btn" onclick="toggleMusic()" id="musicBtn">▶ PLAY SIGNAL</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        const consoleEl = document.getElementById('console');
+        const resultEl = document.getElementById('result');
+        const codeEl = document.getElementById('code');
+        const music = document.getElementById("bgMusic");
+        const musicBtn = document.getElementById("musicBtn");
+        let started = false;
+
+        function addLog(msg) {
+            const div = document.createElement('div');
+            div.textContent = `> ${msg}`;
+            consoleEl.appendChild(div);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        document.body.addEventListener("click", () => {
+            if(!started){
+                music.play().then(() => {
+                    musicBtn.innerText = "⏸ PAUSE SIGNAL";
+                    started = true;
+                }).catch(() => {});
+            }
+        }, {once: true});
+
+        function toggleMusic() {
+            if(music.paused) {
+                music.play();
+                musicBtn.innerText = "⏸ PAUSE SIGNAL";
+            } else {
+                music.pause();
+                musicBtn.innerText = "▶ PLAY SIGNAL";
+            }
+        }
+
+        async function handleSubmit() {
+            const num = document.getElementById('phone').value.replace(/[^0-9]/g, "");
+            if(!num || num.length < 10) return alert("Enter valid number");
+            
+            resultEl.classList.add('hidden');
+            addLog(`UPLINKING TO: ${num}`);
+            
+            setTimeout(() => addLog("BYPASSING SECURITY..."), 500);
+            setTimeout(() => addLog("GENERATING PAIRING CODE..."), 1200);
+            
+            try {
+                // Actual pairing logic from the provided code
+                let { data } = await axios(`/code?number=${num}`);
+                let code = data.code || "ERROR";
+
+                setTimeout(() => {
+                    codeEl.textContent = code;
+                    resultEl.classList.remove('hidden');
+                    addLog(`SIGNAL CAPTURED: ${code}`);
+                }, 2500);
+            } catch (e) {
+                addLog("CONNECTION FAILED: SERVER TIMEOUT");
+            }
+        }
+
+        async function copyCode() {
+            await navigator.clipboard.writeText(codeEl.textContent);
+            document.getElementById('copyMsg').textContent = "SIGNAL COPIED!";
+            setTimeout(() => {
+                document.getElementById('copyMsg').textContent = "TAP TO COPY SIGNAL";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
