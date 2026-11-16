@@ -13,7 +13,7 @@ module.exports = {
     OTP_EXPIRY: 300000,
     NEWS_JSON_URL: '',
     BOT_NAME: '> \`❝ 𝐍𝐎𝐌𝐎 𝐌𝐃 𝐌𝐈𝐍𝐈 𝐁𝐎𝐓♡🕊️ ❞\`',
-    OWNER_NAME: 'NIKILA KESHARA',
+    OWNER_NAME: 'ANUHAS',
     OWNER_NUMBER: '94785467893,94720689634',
     BOT_VERSION: '5.0.0',
     BOT_FOOTER: '> \`❝ 𝐍𝐎𝐌𝐎 𝐌𝐃 𝐌𝐈𝐍𝐈 𝐁𝐎𝐓♡🕊️ ❞\`',
